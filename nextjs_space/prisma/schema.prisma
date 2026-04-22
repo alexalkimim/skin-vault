@@ -1,0 +1,22 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model SkinPrice {
+  id              String   @id @default(cuid())
+  marketHashName  String   @unique @map("market_hash_name")
+  priceUsd        Float    @default(0) @map("price_usd")
+  marketplace     String   @default("Steam Market")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([marketHashName])
+  @@index([updatedAt])
+  @@map("skin_prices")
+}
